@@ -15,8 +15,9 @@ class RollbackSitemapController extends ApiController
             if (!$this->entity->ableToShow($user, $id)) {
                 throw new PermissionDeniedException();
             }
+        } else {
+            throw new Exception("Admin middleware configuration is required");
         }
-
         if (config('sitemap.file.sitemap') !== null) {
             $this->sitemap = config('sitemap.file.sitemap');
         } else {

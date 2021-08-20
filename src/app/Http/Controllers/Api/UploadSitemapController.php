@@ -14,8 +14,9 @@ class UploadSitemapController extends ApiController
             if (!$this->entity->ableToShow($user, $id)) {
                 throw new PermissionDeniedException();
             }
+        } else {
+            throw new Exception("Admin middleware configuration is required");
         }
-
         if (config('sitemap.file.sitemap') !== null) {
             $this->sitemap = config('sitemap.file.sitemap');
         } else {
@@ -33,7 +34,7 @@ class UploadSitemapController extends ApiController
         $path        = str_replace($file_name, '', $this->sitemap);
 
         if (file_exists($this->sitemap) == true) {
-            $old_sitemap = $path.'sitemap-' . date('Y-m-d') . '.xml';
+            $old_sitemap = $path . 'sitemap-' . date('Y-m-d') . '.xml';
             copy($this->sitemap, $this->sitemap . ".bak");
             rename($this->sitemap, $old_sitemap);
         }
