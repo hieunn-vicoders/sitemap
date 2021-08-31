@@ -2,6 +2,7 @@
 
 namespace VCComponent\Laravel\Sitemap\Http\Controllers\Api;
 
+use Exception;
 use Illuminate\Http\Request;
 use VCComponent\Laravel\Vicoders\Core\Controllers\ApiController;
 
@@ -9,10 +10,9 @@ class UploadSitemapController extends ApiController
 {
     public function __construct()
     {
-        if (config('sitemap.auth_middleware.admin.middleware') !== null) {
-            $user = $this->getAuthenticatedUser();
-            if (!$this->entity->ableToShow($user, $id)) {
-                throw new PermissionDeniedException();
+        if (config('sitemap.auth_middleware.admin') !== null) {
+            foreach (config('sitemap.auth_middleware.admin') as $middleware) {
+                $this->middleware($middleware['middleware'], ['except' => $middleware['except']]);
             }
         } else {
             throw new Exception("Admin middleware configuration is required");

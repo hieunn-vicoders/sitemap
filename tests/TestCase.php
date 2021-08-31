@@ -26,6 +26,16 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withFactories(__DIR__ . '/Stubs/Factories');
+        $this->loadMigrationsFrom(__DIR__ . '/Stubs/migrations');
+    }
+
+    /**
      * Define environment setup.
      *
      * @param  \Illuminate\Foundation\Application  $app
@@ -89,7 +99,10 @@ class TestCase extends OrchestraTestCase
         
             'auth_middleware' => [
                 'admin' => [
-                    'middleware' => null,
+                    [
+                        'middleware' => 'auth',
+                        'except'     => []
+                    ]
                 ],
             ],
         ]);
