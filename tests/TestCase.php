@@ -6,6 +6,8 @@ use Cviebrock\EloquentSluggable\ServiceProvider;
 use VCComponent\Laravel\Sitemap\Providers\SitemapServiceProvider;
 use Dingo\Api\Provider\LaravelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use GuzzleHttp\RequestOptions;
+use Spatie\Sitemap\Crawler\Profile;
 
 class TestCase extends OrchestraTestCase
 {
@@ -22,6 +24,7 @@ class TestCase extends OrchestraTestCase
             ServiceProvider::class,
             SitemapServiceProvider::class,
             LaravelServiceProvider::class,
+            \Spatie\Sitemap\SitemapServiceProvider::class,
         ];
     }
 
@@ -105,6 +108,15 @@ class TestCase extends OrchestraTestCase
                     ]
                 ],
             ],
+            'guzzle_options' => [
+                RequestOptions::COOKIES => true,
+                RequestOptions::CONNECT_TIMEOUT => 10,
+                RequestOptions::TIMEOUT => 10,
+                RequestOptions::ALLOW_REDIRECTS => false,
+            ],
+            'execute_javascript' => false,
+            'chrome_binary_path' => null,
+            'crawl_profile' => Profile::class,
         ]);
         
     }
