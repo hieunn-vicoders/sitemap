@@ -6,6 +6,8 @@ use VCComponent\Laravel\Sitemap\Test\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use VCComponent\Laravel\Post\Entities\Post;
+use VCComponent\Laravel\Product\Entities\Product;
 
 class SitemapControllerTest extends TestCase
 {
@@ -48,6 +50,36 @@ class SitemapControllerTest extends TestCase
         $this->assertEquals(
             str_replace('/','\\',$response->getFile()->getPathName()),
             str_replace('/','\\',Storage::disk('sitemaps')->path('sitemap.xml'))
+        );
+    }
+
+    /** @test */
+    public function can_generate_internal_sitemap()
+    {
+        $prefix = $this->app['config']->get('sitemap.namespace');
+
+        factory(Product::class, 4)->create();
+
+        $response = $this->call('GET', $prefix . '/sitemap/generate/internal');
+        $response->assertStatus(200);
+
+        $this->assertEquals(
+            $response->getFile()->getPathName(),
+            config('sitemap.file.sitemap')
+        );
+    }
+
+    /** @test */
+    public function can_generate_external_sitemap()
+    {
+        $prefix = $this->app['config']->get('sitemap.namespace');
+
+        $response = $this->call('GET', $prefix . '/sitemap/generate/external');
+        $response->assertStatus(200);
+
+        $this->assertEquals(
+            $response->getFile()->getPathName(),
+            config('sitemap.file.sitemap')
         );
     }
 }

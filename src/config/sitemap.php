@@ -20,6 +20,16 @@ return [
             'middleware' => '',
         ],
     ],
+
+    'default_urls' => [
+        // [
+        //     'loc' => 'http://localhost/about-us',
+        //     'lastmod' => now(),
+        //     'changefreq' => 'daily',
+        //     'priority' => 0.5
+        // ],
+        // ...
+    ],
     
     /*
      * These options will be passed to GuzzleHttp\Client when it is created.

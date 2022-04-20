@@ -23,6 +23,8 @@ class TestCase extends OrchestraTestCase
             SitemapServiceProvider::class,
             LaravelServiceProvider::class,
             \Spatie\Sitemap\SitemapServiceProvider::class,
+            \VCComponent\Laravel\Post\Providers\PostComponentProvider::class,
+            \VCComponent\Laravel\Product\Providers\ProductServiceProvider::class,
         ];
     }
 
@@ -116,6 +118,18 @@ class TestCase extends OrchestraTestCase
             'chrome_binary_path' => null,
             'crawl_profile' => Profile::class,
         ]);
+        $app['config']->set('sluggable', [
+            'source' => null,
+            'maxLength' => null,
+            'maxLengthKeepWords' => true,
+            'method' => null,
+            'separator' => '-',
+            'unique' => true,
+            'uniqueSuffix' => null,
+            'includeTrashed' => false,
+            'reserved' => null,
+            'onUpdate' => false,
         
+        ]);
     }
 }
