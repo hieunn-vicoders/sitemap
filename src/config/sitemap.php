@@ -6,10 +6,7 @@ use Spatie\Sitemap\Crawler\Profile;
 return [
     'namespace'       => env('SITEMAP_COMPONENT_NAMESPACE', 'sitemap-management'),
 
-    'cache' => [
-        //value => exprie time (days)
-        'webpress-sitemap' => 1
-    ],
+    'cache_ttl' => 24 * 60, //The cache time to live is the number of minutes that the sitemap should be re-generate.
 
     'file'            => [
         'sitemap' => storage_path('sitemap.xml'),
@@ -20,6 +17,8 @@ return [
             'middleware' => '',
         ],
     ],
+
+    "driver" => 'internal', // set 'internal' or 'external' to config the way sitemap generated.
 
     'default_urls' => [
         // [

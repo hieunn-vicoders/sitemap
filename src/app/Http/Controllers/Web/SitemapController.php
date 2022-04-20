@@ -22,15 +22,13 @@ class SitemapController extends BaseController
 
     public function __invoke()
     {
-        if (Cache::get('webpress-sitemap') && file_exists($this->sitemapFilePath)) {
-            return response()->file($this->sitemapFilePath);
-        } else {
-            SitemapGenerator::create(config('app.url'))->writeToFile($this->sitemapFilePath);
-
-            Cache::put('webpress-sitemap', true, now()->addDays(config('sitemap.cache.webpress', 1)));
-
-            return response()->file($this->sitemapFilePath);
+        $driver = config('sitemap.driver', 'internal'); 
+        if ($driver == 'internal') {
+            return $this->internalGenerator();
+        } elseif ($driver == 'external') {
+            return $this->externalGenerator();
         }
+        return 'Undefine sitemap driver.';
     }
 
     public function externalGenerator()
