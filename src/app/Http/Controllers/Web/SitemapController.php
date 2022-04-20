@@ -33,12 +33,12 @@ class SitemapController extends BaseController
 
     public function externalGenerator()
     {
-        if (Cache::get('webpress-sitemap') && file_exists($this->sitemapFilePath)) {
+        if (Cache::get('sitemap_cache_ttl') && file_exists($this->sitemapFilePath)) {
             return response()->file($this->sitemapFilePath);
         } else {
             SitemapGenerator::create(config('app.url'))->writeToFile($this->sitemapFilePath);
 
-            Cache::put('webpress-sitemap', true, now()->addDays(config('sitemap.cache.webpress', 1)));
+            Cache::put('sitemap_cache_ttl', true, now()->addMinutes(config('sitemap.cache_ttl', 24 * 60)));
 
             return response()->file($this->sitemapFilePath);
         }
@@ -46,7 +46,7 @@ class SitemapController extends BaseController
 
     public function internalGenerator()
     {
-        if (Cache::get('webpress-sitemap') && file_exists($this->sitemapFilePath)) {
+        if (Cache::get('sitemap_cache_ttl') && file_exists($this->sitemapFilePath)) {
             return response()->file($this->sitemapFilePath);
         } else {
             $sitemap = Sitemap::create();
@@ -57,7 +57,7 @@ class SitemapController extends BaseController
             
             $sitemap->writeToFile($this->sitemapFilePath);
             
-            Cache::put('webpress-sitemap', true, now()->addDays(config('sitemap.cache.webpress', 1)));
+            Cache::put('sitemap_cache_ttl', true, now()->addDays(config('sitemap.cache.webpress', 1)));
 
             return response()->file($this->sitemapFilePath);
         }
