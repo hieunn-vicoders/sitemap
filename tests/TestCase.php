@@ -2,7 +2,6 @@
 
 namespace VCComponent\Laravel\Sitemap\Test;
 
-use Cviebrock\EloquentSluggable\ServiceProvider;
 use VCComponent\Laravel\Sitemap\Providers\SitemapServiceProvider;
 use Dingo\Api\Provider\LaravelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -21,7 +20,6 @@ class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            ServiceProvider::class,
             SitemapServiceProvider::class,
             LaravelServiceProvider::class,
             \Spatie\Sitemap\SitemapServiceProvider::class,
